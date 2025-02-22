@@ -1,0 +1,33 @@
+name: HTML-CSS-JS CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Pobranie kodu
+        uses: actions/checkout@v3
+
+      - name: Sprawdzenie poprawności HTML
+        uses: Cyb3r-Jak3/htmlproofer-action@v1.0.0
+        with:
+          directory: ./
+          allow_hash_href: true
+
+      - name: Sprawdzenie poprawności CSS
+        run: |
+          npm install -g stylelint
+          stylelint "**/*.css"
+
+      - name: Sprawdzenie kodu JS (ESLint)
+        run: |
+          npm install -g eslint
+          eslint "**/*.js" --fix
